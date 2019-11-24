@@ -49,7 +49,7 @@ class Gallery extends Component {
             return el;
         });
 
-        alert(JSON.stringify(arrFlat, null, 4));
+        //! alert(JSON.stringify(arrFlat, null, 4));
         this.setState({
             images: arrFlat
         })
@@ -82,16 +82,23 @@ class Gallery extends Component {
         Toasts.short('Select Images to Remove');
     }
 
-    select = () => {
-        Toasts.short('Selected');
+    select = (sel, data) => {
+        if(sel) {
+            Toasts.short('Selected');
+        } else {
+            Toasts.short('UnSelected');
+        }
+
     }
 
+
+
     getElementWidth = () => {
-        return parseInt(this.state.windowWidth/this.state.number)
+        return parseInt(this.state.windowWidth/this.state.number - 6)
     };
 
     getElementHeight = () => {
-        return parseInt(this.state.windowHeight/this.state.number)
+        return parseInt(this.state.windowHeight/this.state.number - 6)
     }
 
     render() {
@@ -107,7 +114,9 @@ class Gallery extends Component {
                     <FlatList
                         key={this.state.number}
                         data={this.state.images} keyExtractor={(item, index) => item + index} numColumns={this.state.number}
-                        renderItem={({item}) => <PhotoItem key={item.modificationTime} data={item} width={this.getElementWidth()} height={this.getElementHeight()} select={this.select}/>}
+                        renderItem={({item}) => <PhotoItem key={item.modificationTime} data={item}
+                                                           width={this.getElementWidth()} height={this.getElementHeight()}
+                                                           select={this.select} navigation={this.props.navigation}/>}
                     />
                 </View>
             </View>
@@ -118,7 +127,7 @@ class Gallery extends Component {
 const styles = StyleSheet.create({
     cont: {
         flex: 1,
-        backgroundColor: Colors.bc
+        backgroundColor: Colors.bc,
     },
     buttons: {
         flex: 1,

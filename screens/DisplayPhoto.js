@@ -4,6 +4,9 @@ import Colors from "../constants/Colors";
 import Bt from "../components/Bt";
 import Toasts from "../components/Toasts";
 
+import * as MediaLibrary from "expo-media-library";
+
+
 class DisplayPhoto extends Component {
     state = {
         data: this.props.navigation.state.params.data
@@ -20,8 +23,10 @@ class DisplayPhoto extends Component {
         headerTintColor: Colors.main
     }
 
-    remove = () => {
+    remove = async () => {
         Toasts.short('remove');
+        await MediaLibrary.deleteAssetsAsync([this.state.data.id]);
+        this.props.navigation.goBack();
     }
 
     render() {

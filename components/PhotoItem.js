@@ -21,9 +21,8 @@ class PhotoItem extends Component {
     })
 
     press = () => {
-        this.props.select(true, this.props.data);
         if (!this.state.border) {
-            this.props.select(true, this.props.data);
+            this.props.select(true, this.props.data.id);
             this.setState({
                 border: {
                     borderWidth: 1,
@@ -31,7 +30,7 @@ class PhotoItem extends Component {
                 }
             })
         } else {
-            this.props.select(false, this.props.data);
+            this.props.select(false, this.props.data.id);
             this.setState({
                 border: null
             })
@@ -44,7 +43,7 @@ class PhotoItem extends Component {
     }
 
     render() {
-        console.log(this.props.data);
+        // console.log(this.props.data);
         return (
             <TouchableOpacity onPress={this.press} onLongPress={this.longPress} style={[this.state.border, this.styles.cont]}>
                 <Image style={this.styles.image} source={{ uri: this.props.data.uri }}/>

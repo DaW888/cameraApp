@@ -35,12 +35,15 @@ class CameraView extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     }
 
+
+
     componentWillUnmount() {
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
     }
 
     handleBackPress = () => {
         Toasts.short('wracamy');
+
     }
 
 
@@ -60,7 +63,7 @@ class CameraView extends Component {
             if (this.camera) {
                 let photo = await this.camera.takePictureAsync();
                 let asset = await MediaLibrary.createAssetAsync(photo.uri);
-                alert(JSON.stringify(asset, null, 4))
+                // alert(JSON.stringify(asset, null, 4))
             }
         }
     }

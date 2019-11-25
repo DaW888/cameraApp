@@ -16,7 +16,8 @@ class Gallery extends Component {
         images: null,
         windowWidth: Dimensions.get('window').width,
         windowHeight: Dimensions.get('window').height,
-        number: 4
+        number: 4,
+        arrSelected: [],
     }
 
     static navigationOptions = {
@@ -36,7 +37,17 @@ class Gallery extends Component {
             alert('brak uprawnien do czytania zdjec z galerii')
         }
 
-        this.getImages();
+        this.focusListener = this.props.navigation.addListener('didFocus', () => {
+            Toasts.long('odswiezam');
+            this.getImages();
+
+        })
+
+        // this.getImages();
+    }
+
+    componentWillUnmount() {
+        this.focusListener.remove();
     }
 
     getImages = async () => {
@@ -77,18 +88,31 @@ class Gallery extends Component {
 
     }
 
-    removeSelected = () => {
-        console.log('remove selected');
-        Toasts.short('Select Images to Remove');
+    removeSelected = async () => {
+        if (this.state.arrSelected.length !== 0) {
+            await MediaLibrary.deleteAssetsAsync(this.state.arrSelected);
+            this.getImages();
+        } else
+            Toasts.short('Select Images to Remove');
     }
 
     select = (sel, data) => {
+        console.log(sel, ' select');
+        const selected = [...this.state.arrSelected];
         if(sel) {
-            Toasts.short('Selected');
-        } else {
-            Toasts.short('UnSelected');
-        }
+            this.setState({
+                arrSelected: [...selected, data]
+            })
 
+        } else {
+            const ind = selected.indexOf(data);
+            selected.splice(ind, 1);
+
+            this.setState({
+                arrSelected: selected
+            })
+        }
+        console.log('arrr', this.state.arrSelected);
     }
 
 
